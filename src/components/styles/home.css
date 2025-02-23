@@ -6,7 +6,7 @@
   
   body {
     font-family: 'Arial', sans-serif;
-    background-image: url("C:\Reactjs projects\Mediquiz\white-background.jpg");
+    background-image: url('../styles/white-background.jpg'); 
     background-repeat: no-repeat;
     background-size: 100% 100%;
   

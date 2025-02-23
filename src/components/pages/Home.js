@@ -4,10 +4,12 @@ import Footer from "../firstpage/Footer"; // ✅ Corrected path
 import Card from "../firstpage/Card"; // ✅ Corrected path
 import "../styles/home.css";
 import "../creatquizpage/CreateQuiz";
+
 function Home() {
   return (
     <div>
       <Navbar />
+      
       <div className="card-container">
       <Card 
         title="Create a Quiz" 
