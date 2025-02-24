@@ -22,7 +22,7 @@ function Home() {
         title="Take a Quiz" 
         description="Attempt quizzes and see how well you score!" 
         buttonText="Start Quiz" 
-        link="/quiz"
+        link="/takequiz"
       />
 
       <Card 

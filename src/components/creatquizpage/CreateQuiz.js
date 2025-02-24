@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import QuizForm from "./QuizForm";
 import "./style.css";
 
-const CreateQuiz = () => {  // ✅ Name starts with uppercase
+const CreateQuiz = () => {
   const [quizzes, setQuizzes] = useState([]);
 
+  useEffect(() => {
+    const savedQuizzes = JSON.parse(localStorage.getItem("quizzes")) || [];
+    setQuizzes(savedQuizzes);
+  }, []);
+
   const handleQuizSubmit = (quizData) => {
-    setQuizzes([...quizzes, quizData]);
+    const updatedQuizzes = [...quizzes, quizData];
+    setQuizzes(updatedQuizzes);
+    localStorage.setItem("quizzes", JSON.stringify(updatedQuizzes)); // Save to localStorage
   };
 
   return (

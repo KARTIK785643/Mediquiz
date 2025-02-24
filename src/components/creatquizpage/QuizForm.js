@@ -43,7 +43,9 @@ const QuizForm = ({ onSubmit }) => {
   };
 
   const handleAddOption = () => {
-    setQuestion({ ...question, options: [...question.options, ""] });
+    if (question.options.length < 5) {
+      setQuestion({ ...question, options: [...question.options, ""] });
+    }
   };
 
   const handleRemoveOption = (index) => {
@@ -52,15 +54,52 @@ const QuizForm = ({ onSubmit }) => {
   };
 
   const handleAddQuestion = () => {
+    if (!question.text.trim() || !question.correctAnswer.trim()) {
+      alert("Please enter a question and select a correct answer.");
+      return;
+    }
+
     setQuiz({ ...quiz, questions: [...quiz.questions, question] });
-    setQuestion({ text: "", type: "multiple-choice", options: ["", ""], correctAnswer: "" });
+
+    // Reset question state
+    setQuestion({
+      text: "",
+      type: "multiple-choice",
+      options: ["", ""],
+      correctAnswer: "",
+    });
+  };
+
+  const saveQuizToLocalStorage = (quiz) => {
+    localStorage.setItem("quizData", JSON.stringify(quiz));
+  };
+
+  const handleSubmitQuiz = () => {
+    if (quiz.questions.length === 0) {
+      alert("Please add at least one question before submitting.");
+      return;
+    }
+
+    saveQuizToLocalStorage(quiz);
+    onSubmit(quiz);
   };
 
   return (
     <div className="quiz-form-container">
       <h3>Quiz Details</h3>
-      <input type="text" name="title" value={quiz.title} onChange={handleQuizChange} placeholder="Quiz Title" />
-      <textarea name="description" value={quiz.description} onChange={handleQuizChange} placeholder="Quiz Description" />
+      <input
+        type="text"
+        name="title"
+        value={quiz.title}
+        onChange={handleQuizChange}
+        placeholder="Quiz Title"
+      />
+      <textarea
+        name="description"
+        value={quiz.description}
+        onChange={handleQuizChange}
+        placeholder="Quiz Description"
+      />
 
       <label>Upload Quiz Image:</label>
       <input type="file" name="image" accept="image/*" onChange={handleFileChange} />
@@ -71,7 +110,13 @@ const QuizForm = ({ onSubmit }) => {
       {quiz.audio && <audio controls src={quiz.audio} className="preview-audio"></audio>}
 
       <h3>Add Question</h3>
-      <input type="text" name="text" value={question.text} onChange={handleQuestionChange} placeholder="Enter question text" />
+      <input
+        type="text"
+        name="text"
+        value={question.text}
+        onChange={handleQuestionChange}
+        placeholder="Enter question text"
+      />
 
       <h4>Options:</h4>
       {question.options.map((option, index) => (
@@ -89,13 +134,21 @@ const QuizForm = ({ onSubmit }) => {
             checked={question.correctAnswer === option}
             onChange={() => setQuestion({ ...question, correctAnswer: option })}
           />
-          <button type="button" onClick={() => handleRemoveOption(index)} className="remove-btn">X</button>
+          {question.options.length > 2 && (
+            <button type="button" onClick={() => handleRemoveOption(index)} className="remove-btn">
+              X
+            </button>
+          )}
         </div>
       ))}
-      <button type="button" onClick={handleAddOption}>+ Add Option</button>
+      {question.options.length < 5 && (
+        <button type="button" onClick={handleAddOption}>
+          + Add Option
+        </button>
+      )}
 
       <button onClick={handleAddQuestion}>Add Question</button>
-      <button onClick={() => onSubmit(quiz)}>Submit Quiz</button>
+      <button onClick={handleSubmitQuiz}>Submit Quiz</button>
     </div>
   );
 };
