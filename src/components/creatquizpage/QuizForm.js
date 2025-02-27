@@ -13,9 +13,11 @@ const QuizForm = ({ onSubmit }) => {
   const [question, setQuestion] = useState({
     text: "",
     type: "multiple-choice",
-    options: ["", ""], // Default 2 empty options
+    options: ["", ""],
     correctAnswer: "",
   });
+
+  const [quizLink, setQuizLink] = useState(null); // Store generated link
 
   const handleQuizChange = (e) => {
     setQuiz({ ...quiz, [e.target.name]: e.target.value });
@@ -71,7 +73,9 @@ const QuizForm = ({ onSubmit }) => {
   };
 
   const saveQuizToLocalStorage = (quiz) => {
-    localStorage.setItem("quizData", JSON.stringify(quiz));
+    const quizId = Date.now(); // Unique quiz ID (timestamp-based)
+    localStorage.setItem(`quiz_${quizId}`, JSON.stringify(quiz));
+    return quizId;
   };
 
   const handleSubmitQuiz = () => {
@@ -80,8 +84,12 @@ const QuizForm = ({ onSubmit }) => {
       return;
     }
 
-    saveQuizToLocalStorage(quiz);
+    const quizId = saveQuizToLocalStorage(quiz);
     onSubmit(quiz);
+
+    // Generate a sharable link
+    const link = `${window.location.origin}/quiz/${quizId}`;
+    setQuizLink(link);
   };
 
   return (
@@ -149,6 +157,12 @@ const QuizForm = ({ onSubmit }) => {
 
       <button onClick={handleAddQuestion}>Add Question</button>
       <button onClick={handleSubmitQuiz}>Submit Quiz</button>
+
+      {quizLink && (
+        <div className="quiz-link-container">
+          <p>Quiz Link: <a href={quizLink} target="_blank" rel="noopener noreferrer">{quizLink}</a></p>
+        </div>
+      )}
     </div>
   );
 };

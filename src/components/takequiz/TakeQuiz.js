@@ -1,29 +1,39 @@
 import React, { useState, useEffect } from "react";
 import "./quiz.css";
+import "../styles/home.css";
+import Navbar from "../firstpage/Navbar";
 
 const TakeQuiz = () => {
   const [quizzes, setQuizzes] = useState([]);
+  const [quizLink, setQuizLink] = useState("");
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizLoaded, setQuizLoaded] = useState(false);
 
   // Load quizzes from localStorage
   useEffect(() => {
-    const savedQuiz = JSON.parse(localStorage.getItem("quizData"));
-    if (savedQuiz) {
-      setQuizzes([savedQuiz]); // Store as an array for selection
-    }
+    const savedQuizzes = JSON.parse(localStorage.getItem("quizzes")) || [];
+    setQuizzes(savedQuizzes);
   }, []);
 
-  // Handle quiz selection
-  const handleQuizSelect = (quiz) => {
-    setSelectedQuiz(quiz);
-    setCurrentQuestionIndex(0);
-    setSelectedOption(null);
-    setScore(0);
-    setQuizCompleted(false);
+  // Handle quiz link submission
+  const handleQuizLinkSubmit = () => {
+    const quizIndex = quizLink.split("/").pop(); // Extract quiz index from the URL
+    const quizData = quizzes[quizIndex];
+
+    if (quizData) {
+      setSelectedQuiz(quizData);
+      setQuizLoaded(true);
+      setCurrentQuestionIndex(0);
+      setSelectedOption(null);
+      setScore(0);
+      setQuizCompleted(false);
+    } else {
+      alert("Invalid Quiz Link. Please enter a valid link.");
+    }
   };
 
   // Handle answer selection
@@ -36,11 +46,11 @@ const TakeQuiz = () => {
     if (!selectedQuiz) return;
 
     if (selectedOption === selectedQuiz.questions[currentQuestionIndex].correctAnswer) {
-      setScore(score + 1);
+      setScore((prevScore) => prevScore + 1);
     }
 
     if (currentQuestionIndex + 1 < selectedQuiz.questions.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setSelectedOption(null);
     } else {
       setQuizCompleted(true);
@@ -48,66 +58,62 @@ const TakeQuiz = () => {
   };
 
   return (
-    <div className="quiz-container">
-      {/* Quiz selection screen */}
-      {!selectedQuiz ? (
-        <div>
-          <h2>Select a Quiz</h2>
-          {quizzes.length > 0 ? (
-            <ul>
-              {quizzes.map((quiz, index) => (
-                <li key={index}>
-                  <button onClick={() => handleQuizSelect(quiz)}>
-                    {quiz.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No quizzes available</p>
-          )}
-        </div>
-      ) : quizCompleted ? (
-        // Quiz completion screen
-        <div className="result">
-          <h2>Quiz Completed!</h2>
-          <p>Your Score: {score} / {selectedQuiz.questions.length}</p>
-          <button onClick={() => setSelectedQuiz(null)}>Take Another Quiz</button>
-        </div>
-      ) : (
-        // Quiz question screen
-        <div className="quiz-box">
-          {selectedQuiz.questions && selectedQuiz.questions[currentQuestionIndex] ? (
-            <>
-              {/* ✅ Question is now displayed correctly */}
-              <h2 className="question-text">
-                Question {currentQuestionIndex + 1}: {selectedQuiz.questions[currentQuestionIndex].text}
-              </h2>
+    <>
+      <Navbar />
+      <div className="quiz-container">
+        {!quizLoaded ? (
+          <div className="quiz-link-container">
+            <h2>Enter Quiz Link</h2>
+            <input
+              type="text"
+              placeholder="Paste quiz link here..."
+              value={quizLink}
+              onChange={(e) => setQuizLink(e.target.value)}
+              className="quiz-link-input"
+            />
+            <button onClick={handleQuizLinkSubmit} className="submit-link-btn">
+              Start Quiz
+            </button>
+          </div>
+        ) : !selectedQuiz ? (
+          <p>No quiz selected</p>
+        ) : quizCompleted ? (
+          <div className="result">
+            <h2>Quiz Completed!</h2>
+            <p>Your Score: {score} / {selectedQuiz.questions.length}</p>
+            <button onClick={() => setQuizLoaded(false)}>Take Another Quiz</button>
+          </div>
+        ) : (
+          <div className="quiz-box">
+            {selectedQuiz?.questions && selectedQuiz.questions[currentQuestionIndex] ? (
+              <>
+                <h2 className="question-text">
+                  Question {currentQuestionIndex + 1}: {selectedQuiz.questions[currentQuestionIndex].text}
+                </h2>
 
-              {/* ✅ Options are displayed correctly */}
-              <div className="options">
-                {selectedQuiz.questions[currentQuestionIndex].options.map((option, index) => (
-                  <button
-                    key={index}
-                    className={`option-btn ${selectedOption === option ? "selected" : ""}`}
-                    onClick={() => handleAnswer(option)}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
+                <div className="options">
+                  {selectedQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+                    <button
+                      key={index}
+                      className={`option-btn ${selectedOption === option ? "selected" : ""}`}
+                      onClick={() => handleAnswer(option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
 
-              {/* Next button */}
-              <button onClick={handleNext} className="next-btn">
-                {currentQuestionIndex === selectedQuiz.questions.length - 1 ? "Finish" : "Next"}
-              </button>
-            </>
-          ) : (
-            <h2>No Questions Available</h2>
-          )}
-        </div>
-      )}
-    </div>
+                <button onClick={handleNext} className="next-btn">
+                  {currentQuestionIndex === selectedQuiz.questions.length - 1 ? "Finish" : "Next"}
+                </button>
+              </>
+            ) : (
+              <h2>No Questions Available</h2>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

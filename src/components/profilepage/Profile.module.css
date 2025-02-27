@@ -1,0 +1,117 @@
+/* Profile.module.css */
+
+.profileContainer {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  text-align: center;
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.profileContainer:hover {
+  transform: scale(1.02);
+}
+
+.profileHeader img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 3px solid #007bff;
+}
+
+.profileHeader h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.profileHeader p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* Stats Section */
+.statsSection {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.statCard {
+  flex: 1;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.statCard h2 {
+  font-size: 22px;
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.statCard p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Achievements Section */
+.achievementsSection {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.achievementsSection h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.achievementsList {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.achievementBadge {
+  padding: 8px 12px;
+  background: #007bff;
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+}
+
+.achievementBadge:hover {
+  background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profileContainer {
+      max-width: 90%;
+      padding: 20px;
+  }
+
+  .statsSection {
+      flex-direction: column;
+      gap: 10px;
+  }
+
+  .achievementBadge {
+      padding: 6px 10px;
+      font-size: 12px;
+  }
+}

@@ -8,8 +8,8 @@ function Navbar() {
       <h1 className="logo">MediQuiz</h1>
       <ul className="nav-links">
         <li><Link to="/" className="nav-item">Home</Link></li>
-        <li><Link to="/quiz" className="nav-item">About</Link></li>
-        <li><Link to="/login" className="nav-item">Profile</Link></li>
+        <li><Link to="/about" className="nav-item">About</Link></li>
+        <li><Link to="/Profile" className="nav-item">Profile</Link></li>
         <li><Link to="/register" className="nav-item">Login</Link></li>
       </ul>
     </nav>
