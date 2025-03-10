@@ -4,6 +4,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+
 require("dotenv").config();
 
 
@@ -14,7 +16,7 @@ app.use(express.static(path.join(__dirname, "build")));
 
 // Extract environment variables with defaults
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/myquizDB";
+const MONGODB_URI = process.env.MONGODB_URI || "your-mongodb-atlas-connection-string";
 const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
@@ -81,6 +83,8 @@ mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000 // Increase timeout to 5 seconds
+
   })
   .then(() => {
     console.log("✅ MongoDB connected successfully");

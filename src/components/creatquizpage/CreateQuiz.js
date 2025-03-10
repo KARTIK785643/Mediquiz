@@ -12,7 +12,7 @@ const CreateQuiz = () => {
   // Fetch quizzes from database on component mount
   useEffect(() => {
     setIsLoading(true);
-    axios.get("http://localhost:5000/api/quizzes") 
+    axios.get("https://quiz-backend-1-5i3k.onrender.com/api/quizzes") 
 
       .then(response => {
         setQuizzes(response.data);
@@ -57,7 +57,7 @@ const CreateQuiz = () => {
       
       // Send as JSON with timeout and explicit error handling
       const response = await axios.post(
-        "http://localhost:5000/api/quizzes", 
+        "https://quiz-backend-1-5i3k.onrender.com/api/quizzes", 
         quizToSubmit,
         {
           timeout: 10000, // 10 second timeout
@@ -106,7 +106,7 @@ const CreateQuiz = () => {
     if (window.confirm("Are you sure you want to delete this quiz?")) {
       try {
         setIsLoading(true);
-        await axios.delete(`http://localhost:5000/api/quizzes/${quizId}`);
+        await axios.delete(`https://quiz-backend-1-5i3k.onrender.com/api/quizzes/${quizId}`);
         
         // Remove from state
         setQuizzes(quizzes.filter(quiz => quiz._id !== quizId));

@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     try {
       console.log("Attempting login with:", user.email);
-      const response = await axios.post("http://localhost:5000/login", user);
+      const response = await axios.post("https://quiz-backend-1-5i3k.onrender.com/api/login", user);
       
       console.log("Login response:", response.data);
       
