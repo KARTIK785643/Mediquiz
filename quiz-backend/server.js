@@ -6,11 +6,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+
+const app = express();
 // Initialize Express app
 app.use(express.static(path.join(__dirname, "build")));
 
-
-const app = express();
 
 // Extract environment variables with defaults
 const PORT = process.env.PORT || 5000;
