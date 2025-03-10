@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // Initialize Express app
+app.use(express.static(path.join(__dirname, "build")));
+
 
 const app = express();
 
