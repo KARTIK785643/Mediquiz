@@ -3,51 +3,84 @@ import "./ranking.css";
 import Navbar from "../firstpage/Navbar";
 
 const RankingPage = () => {
-  const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  // Dummy user data (replace with API call if needed)
-  useEffect(() => {
-    const dummyUsers = [
-      { id: 1, name: "Alice", score: 85 },
-      { id: 2, name: "Bob", score: 92 },
-      { id: 3, name: "Charlie", score: 78 },
-      { id: 4, name: "David", score: 95 },
-      { id: 5, name: "Eve", score: 88 },
-    ];
+    useEffect(() => {
+        const fetchRankings = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch("http://localhost:5000/api/rankings");
+                if (!response.ok) throw new Error("Failed to fetch rankings");
+                
+                const data = await response.json();
+                
+                // Sort users by correct answers (if not already sorted by backend)
+                const sortedUsers = data.sort((a, b) => b.correctAnswers - a.correctAnswers);
+                
+                // Add rank property based on position
+                const rankedUsers = sortedUsers.map((user, index) => ({
+                    ...user,
+                    rank: index + 1
+                }));
+                
+                setUsers(rankedUsers);
+                setError(null);
+            } catch (error) {
+                console.error("Error fetching rankings:", error);
+                setError("Failed to load rankings. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    // Sort users by score (descending order)
-    const sortedUsers = dummyUsers.sort((a, b) => b.score - a.score);
-    setUsers(sortedUsers);
-  }, []);
+        fetchRankings();
+    }, []);
 
-  return (
-    <>
-      <Navbar />
-      <div className="ranking-container">
-          
-
-      <h2>User Rankings</h2>
-      <table className="ranking-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, index) => (
-            <tr key={user.id}>
-              <td>{index + 1}</td>
-              <td>{user.name}</td>
-              <td>{user.score}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    </>
-  );
+    return (
+        <>
+            <Navbar />
+            <div className="ranking-container">
+                <h2>User Rankings</h2>
+                
+                {loading && <p>Loading rankings...</p>}
+                {error && <p className="error-message">{error}</p>}
+                
+                {!loading && !error && (
+                    <table className="ranking-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th>Correct Answers</th>
+                                <th>Total Questions</th>
+                                <th>Accuracy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((user) => (
+                                <tr key={user.id || user._id}>
+                                    <td>{user.rank}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.correctAnswers}</td>
+                                    <td>{user.totalQuestions}</td>
+                                    <td>{user.totalQuestions > 0 ? 
+                                        `${((user.correctAnswers / user.totalQuestions) * 100).toFixed(1)}%` : 
+                                        '0%'}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+                
+                {!loading && !error && users.length === 0 && (
+                    <p>No rankings available yet.</p>
+                )}
+            </div>
+        </>
+    );
 };
 
 export default RankingPage;

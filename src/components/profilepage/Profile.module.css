@@ -1,13 +1,13 @@
-/* Profile.module.css */
-
+/* Profile Container */
 .profileContainer {
-  max-width: 600px;
-  margin: 50px auto;
+  width: 90%;
+  max-width: 450px;
+  margin: 60px auto;
   padding: 30px;
   text-align: center;
-  background: #ffffff;
+  background: #e4e9e9;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  border-radius: 20px;
   transition: transform 0.2s ease-in-out;
 }
 
@@ -15,23 +15,104 @@
   transform: scale(1.02);
 }
 
-.profileHeader img {
-  width: 120px;
-  height: 120px;
+/* Profile Image Section */
+.profileImageSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profileImageContainer {
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
+  overflow: hidden;
   margin-bottom: 15px;
-  border: 3px solid #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.profileHeader h1 {
-  font-size: 24px;
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0;
   color: #333;
-  margin-bottom: 5px;
+  font-size: 64px;
+  font-weight: bold;
+  border-radius: 50%;
 }
 
-.profileHeader p {
-  font-size: 16px;
-  color: #666;
+/* Image Upload Controls */
+.imageUploadControls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.uploadButton,
+.saveImageButton {
+  padding: 8px 16px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.uploadButton:hover {
+  background-color: #357abd;
+}
+
+.saveImageButton {
+  background-color: #4caf50;
+}
+
+.saveImageButton:hover {
+  background-color: #3d8b40;
+}
+
+/* Profile Info */
+.profileTitle {
+  font-size: 22px;
+  color: #146e5f;
+  margin-bottom: 10px;
+}
+
+.profileInfo {
+  text-align: left;
+  margin-top: 10px;
+}
+
+.profileField {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.fieldLabel {
+  font-weight: bold;
+  color: #333;
+}
+
+.fieldValue {
+  color: #555;
 }
 
 /* Stats Section */
@@ -55,7 +136,7 @@
 
 .statCard h2 {
   font-size: 22px;
-  color: #007bff;
+  color: #146e5f;
   margin-bottom: 5px;
 }
 
@@ -86,7 +167,7 @@
 
 .achievementBadge {
   padding: 8px 12px;
-  background: #007bff;
+  background: #0c6262;
   color: white;
   border-radius: 20px;
   font-size: 14px;
@@ -101,17 +182,17 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .profileContainer {
-      max-width: 90%;
-      padding: 20px;
+    width: 95%;
+    padding: 20px;
   }
 
   .statsSection {
-      flex-direction: column;
-      gap: 10px;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .achievementBadge {
-      padding: 6px 10px;
-      font-size: 12px;
+    padding: 6px 10px;
+    font-size: 12px;
   }
 }

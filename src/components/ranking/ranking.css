@@ -1,39 +1,25 @@
 .ranking-container {
-    text-align: center;
-    margin: 20px auto;
-    width: 50%;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    color: #333;
-  }
-  
-  .ranking-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-  }
-  
-  .ranking-table th, .ranking-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .ranking-table th {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .ranking-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .ranking-table tr:hover {
-    background-color: #ddd;
-  }
-  
+  max-width: 600px;
+  margin: auto;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

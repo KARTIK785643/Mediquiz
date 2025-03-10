@@ -17,8 +17,6 @@ const QuizForm = ({ onSubmit }) => {
     correctAnswer: "",
   });
 
-  const [quizLink, setQuizLink] = useState(null); // Store generated link
-
   const handleQuizChange = (e) => {
     setQuiz({ ...quiz, [e.target.name]: e.target.value });
   };
@@ -72,24 +70,23 @@ const QuizForm = ({ onSubmit }) => {
     });
   };
 
-  const saveQuizToLocalStorage = (quiz) => {
-    const quizId = Date.now(); // Unique quiz ID (timestamp-based)
-    localStorage.setItem(`quiz_${quizId}`, JSON.stringify(quiz));
-    return quizId;
-  };
-
   const handleSubmitQuiz = () => {
     if (quiz.questions.length === 0) {
       alert("Please add at least one question before submitting.");
       return;
     }
 
-    const quizId = saveQuizToLocalStorage(quiz);
+    // Call the onSubmit prop with the quiz data
     onSubmit(quiz);
-
-    // Generate a sharable link
-    const link = `${window.location.origin}/quiz/${quizId}`;
-    setQuizLink(link);
+    
+    // Reset the form after submission
+    setQuiz({
+      title: "",
+      description: "",
+      image: null,
+      audio: null,
+      questions: [],
+    });
   };
 
   return (
@@ -158,11 +155,16 @@ const QuizForm = ({ onSubmit }) => {
       <button onClick={handleAddQuestion}>Add Question</button>
       <button onClick={handleSubmitQuiz}>Submit Quiz</button>
 
-      {quizLink && (
-        <div className="quiz-link-container">
-          <p>Quiz Link: <a href={quizLink} target="_blank" rel="noopener noreferrer">{quizLink}</a></p>
-        </div>
-      )}
+      <div className="quiz-summary">
+        <h3>Current Quiz Questions: {quiz.questions.length}</h3>
+        {quiz.questions.length > 0 && (
+          <ul>
+            {quiz.questions.map((q, index) => (
+              <li key={index}>{q.text}</li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };

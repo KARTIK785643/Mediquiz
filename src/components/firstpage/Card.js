@@ -6,7 +6,7 @@ function Card({ title, description, link }) {
   // Define button text based on the title
   const buttonTextMapping = {
     "Create a Quiz": "Create Quiz",
-    "Take a Quiz": "Start Quiz",
+    "Start Quiz": "Start Quiz",
     "Leaderboard": "View Rankings",
   };
 
